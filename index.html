@@ -33,45 +33,24 @@
             color: var(--text-dark);
         }
 
-        /* Gradient theme */
-        html.gradient {
-            background: var(--bg-dark);
-        }
-        html.gradient body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.05), rgba(255,255,255,0.05));
-            background-size: 400% 400%;
-            animation: gradient-anim 20s ease infinite;
-            z-index: -1;
-        }
-
-        @keyframes gradient-anim {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Liquid Glass Navbar Effect */
+        /* Liquid Glass Navbar Effect (Restored & Fixed) */
         .glass-nav {
             -webkit-backdrop-filter: url(#frosted);
             backdrop-filter: url(#frosted);
         }
-        /* Default/Dark/Gradient mode styles */
+        /* Dark mode styles */
         .glass-nav {
-            background: rgba(255, 255, 255, 0.06); /* Brighter, more transparent background for a better glass effect */
-            box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1); /* Light border to match */
+            background: rgba(255, 255, 255, 0.06); /* Original subtle white tint */
+            box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1);
         }
-        /* Light mode overrides */
+        /* Light mode overrides (FIXED) */
         html.light .glass-nav {
-            background: rgba(245, 245, 245, 0.65); /* Increased transparency for a better effect */
-            box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.08); /* Subtle dark border for definition */
+            background: rgba(0, 0, 0, 0.05); /* Subtle dark tint for a cleaner glass effect on light backgrounds */
+            box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.08);
         }
 
 
-        /* Announcement Banner Animation - UPDATED */
+        /* Announcement Banner Animation */
         .announcement-wrapper {
             display: flex;
             animation: marquee 20s linear infinite;
@@ -225,7 +204,6 @@
                  <button id="theme-toggle" class="p-2">
                     <svg id="theme-icon-dark" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" /></svg>
                     <svg id="theme-icon-light" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
-                    <svg id="theme-icon-gradient" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg>
                  </button>
             </div>
         </nav>
@@ -545,19 +523,25 @@
         DOM.whatsappButton.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     };
 
-    // --- THEME TOGGLE ---
+    // --- THEME TOGGLE (Dark/Light Only) ---
     const themeToggleBtn = document.getElementById('theme-toggle');
-    const themes = ['dark', 'light', 'gradient'];
-    let currentThemeIndex = 0;
+
     const applyTheme = (theme) => {
-        document.documentElement.className = '';
-        document.documentElement.classList.add(theme);
-        themes.forEach(t => document.getElementById(`theme-icon-${t}`).classList.toggle('hidden', t !== themes[(themes.indexOf(theme) + 1) % themes.length]));
+        // Apply theme to HTML tag by setting the class
+        document.documentElement.className = theme;
+        
+        // Update icons: show the icon for the theme you will switch TO
+        document.getElementById('theme-icon-dark').classList.toggle('hidden', theme === 'light'); // Show moon icon when in light mode
+        document.getElementById('theme-icon-light').classList.toggle('hidden', theme === 'dark'); // Show sun icon when in dark mode
+        
+        // Save the new theme to localStorage
+        localStorage.setItem('theme', theme);
     };
+
     themeToggleBtn.addEventListener('click', () => {
-        currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-        const newTheme = themes[currentThemeIndex];
-        localStorage.setItem('theme', newTheme);
+        // Determine the new theme by checking the current one
+        const currentTheme = localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         applyTheme(newTheme);
     });
     
@@ -626,8 +610,9 @@
     // --- INITIALIZATION ---
     document.addEventListener('DOMContentLoaded', () => {
         renderProductGrid(DOM.productGrid, products);
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        currentThemeIndex = themes.indexOf(savedTheme);
+        
+        // Initialize theme from localStorage or default to 'dark'
+        const savedTheme = localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
         applyTheme(savedTheme);
         
         // Loading animation
