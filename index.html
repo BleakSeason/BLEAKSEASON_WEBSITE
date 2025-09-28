@@ -71,9 +71,20 @@
         }
 
 
-        /* Announcement Banner Animation */
-        .announcement-banner p { animation: marquee 25s linear infinite; white-space: nowrap; }
-        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        /* Announcement Banner Animation - UPDATED */
+        .announcement-wrapper {
+            display: flex;
+            animation: marquee 20s linear infinite;
+        }
+        .announcement-text {
+            white-space: nowrap;
+            flex-shrink: 0;
+            padding: 0 2rem; /* Adds space between repetitions */
+        }
+        @keyframes marquee { 
+            0% { transform: translateX(0%); } 
+            100% { transform: translateX(-50%); } /* Animate by half the width for seamless loop */
+        }
 
         /* Product Image Hover - Static Noise Effect */
         .product-card .image-container::after {
@@ -184,7 +195,19 @@
     </div>
 
     <div class="announcement-banner bg-bs-light text-bs-dark dark:bg-black dark:text-bs-light text-xs py-2 overflow-hidden border-b border-bs-dark dark:border-bs-light">
-        <p class="font-mono uppercase">FREE ALL INDIA SHIPPING ON ALL ORDERS</p>
+        <div class="announcement-wrapper">
+            <p class="announcement-text font-mono uppercase">FREE ALL INDIA SHIPPING ON ALL ORDERS</p>
+            <p class="announcement-text font-mono uppercase">FREE ALL INDIA SHIPPING ON ALL ORDERS</p>
+	    <p class="announcement-text font-mono uppercase">FREE ALL INDIA SHIPPING ON ALL ORDERS</p>
+            <p class="announcement-text font-mono uppercase">FREE ALL INDIA SHIPPING ON ALL ORDERS</p>
+            <p class="announcement-text font-mono uppercase">FREE ALL INDIA SHIPPING ON ALL ORDERS</p>
+            <p class="announcement-text font-mono uppercase">FREE ALL INDIA SHIPPING ON ALL ORDERS</p>
+            <p class="announcement-text font-mono uppercase">FREE ALL INDIA SHIPPING ON ALL ORDERS</p>
+	    <p class="announcement-text font-mono uppercase">FREE ALL INDIA SHIPPING ON ALL ORDERS</p>
+            <p class="announcement-text font-mono uppercase">FREE ALL INDIA SHIPPING ON ALL ORDERS</p>
+            <p class="announcement-text font-mono uppercase">FREE ALL INDIA SHIPPING ON ALL ORDERS</p>
+
+        </div>
     </div>
 
     <header id="header" class="sticky top-0 z-40 glass-nav">
@@ -261,8 +284,6 @@
             </div>
         </div>
         
-        <!-- INFO PAGES START HERE -->
-        
         <div id="refund-page" class="page page-hidden info-page max-w-4xl mx-auto">
              <button onclick="showHomePage(event)" class="font-mono text-xs uppercase tracking-widest text-bs-gray hover:text-bs-light dark:hover:text-white transition-colors mb-8">&larr; Back to collection</button>
              <h1>Refund Policy</h1>
@@ -329,7 +350,6 @@
              </div>
              <div class="mt-12 max-w-xl mx-auto">
                 <form id="contact-form" class="space-y-6">
-                    <!-- This div is for showing success or error messages -->
                     <div id="form-status" class="mb-4 text-center min-h-[1.5rem]"></div>
                     
                     <input type="text" name="name" placeholder="Name" class="form-input">
@@ -352,9 +372,7 @@
              </div>
         </div>
         
-        <!-- INFO PAGES END HERE -->
-        
-    </main>
+        </main>
     
     <footer class="text-bs-light bg-bs-dark dark:text-gray-400">
         <div class="container mx-auto px-6 pt-16 pb-8">
@@ -381,7 +399,7 @@
             <div class="container mx-auto px-6">
                 <h3 class="text-3xl font-bold uppercase tracking-wider text-bs-light dark:text-white">Join us on Instagram</h3>
                 <p class="mt-2 text-sm max-w-md mx-auto text-bs-gray dark:text-gray-400">Be the first to know about new drops and exclusive offers.</p>
-                <a href="#" class="mt-6 inline-block border border-white text-white px-8 py-3 uppercase text-xs font-mono tracking-widest transition-colors hover:bg-white hover:text-black">
+                <a href="https://www.instagram.com/bleak.season/" target="_blank" class="mt-6 inline-block border border-white text-white px-8 py-3 uppercase text-xs font-mono tracking-widest transition-colors hover:bg-white hover:text-black">
                     Follow
                 </a>
             </div>
